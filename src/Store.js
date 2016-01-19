@@ -16,8 +16,6 @@ export function Store() {
   function addReducer(reducer) {
     var currentState = this.getState();
 
-    var reducersToAdd = [];
-
     Object.keys(reducer).forEach((r) => {
       // TODO: check if reducer is already present?
       reducers[r] = reducer[r];
