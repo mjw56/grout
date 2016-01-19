@@ -77,6 +77,16 @@
 
       console.log(store.getState());
 
+      setTimeout(function() {
+        var bar = function bar(state, action) {
+          return {
+            bar: 'baz'
+          };
+        }
+        store = store.addReducer({bar});
+        console.log('added bar reducer:', store.getState());
+      }, 12000);
+
       ReactDOM.render(
         React.createElement(CounterContainer, { store: store }),
         document.getElementById('root')
