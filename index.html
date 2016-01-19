@@ -5,6 +5,7 @@
   </head>
   <body>
     <div id="root"></div>
+    <div id="sub-app"></div>
 
     <script src="https://fb.me/react-0.14.6.js"></script>
     <script src="https://fb.me/react-dom-0.14.6.js"></script>
@@ -78,13 +79,29 @@
       console.log(store.getState());
 
       setTimeout(function() {
+        // 12 seconds later a new component
+        // is lazy loaded onto the screen
+
         var bar = function bar(state, action) {
           return {
             bar: 'baz'
           };
         }
         store = store.addReducer({bar});
-        console.log('added bar reducer:', store.getState());
+
+        var SubApp = function(props) {
+          return React.createElement('h1', null, props.value);
+        };
+
+        var SubAppContainer = ReactRedux.connect(
+          mapStateToProps
+        )(SubApp);
+
+        ReactDOM.render(
+          React.createElement(SubAppContainer, { store: store }),
+          document.getElementById('sub-app')
+        );
+
       }, 12000);
 
       ReactDOM.render(
