@@ -1,4 +1,5 @@
 import { combineReducers, createStore } from 'redux';
+import merge from 'lodash/object/merge';
 
 export function Store() {
 
@@ -22,10 +23,10 @@ export function Store() {
       reducers[r] = reducer[r];
     });
 
-    return createStore(
+    return merge({}, createStore(
       combineReducers(reducers),
       currentState
-    );
+    ), {addReducer});
   }
 
   store.addReducer = addReducer;
