@@ -7,7 +7,8 @@
     "prepublish": "npm run build",
     "build": "./build.sh",
     "dev": "webpack-dev-server --config webpack.dist.config.js --content-base dist/ --inline --hot",
-    "serve": "npm run build && npm run dev"
+    "serve": "npm run build && npm run dev",
+    "test": "node ./test/index"
   },
   "author": "Mike Wilcox <mwilcox56@gmail.com> (http://github.com/mjw56)",
   "license": "MIT",
@@ -18,6 +19,7 @@
     "babel-eslint": "^4.1.6",
     "babel-loader": "^6.2.1",
     "babel-preset-es2015": "^6.3.13",
+    "expect": "^1.13.4",
     "webpack-dev-server": "^1.14.1"
   },
   "peerDependencies": {
