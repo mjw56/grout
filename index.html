@@ -13,6 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/4.0.6/react-redux.js"></script>
     <script src="index.js"></script>
     <script>
+
+      // BEGIN COUNTER APP
       var counter = function(state, action) {
         state = state || 0;
 
@@ -76,25 +78,66 @@
       var store = Grout.Store();
       store = store.addReducer({counter});
 
-      console.log(store.getState());
+      // mount first app into DOM
+      ReactDOM.render(
+        React.createElement(CounternterContainer, { store: store }),
+        document.getElementById('root')
+      );
+
+      // END COUNTER APP
 
       setTimeout(function() {
         // 12 seconds later a new component
         // is lazy loaded onto the screen
 
-        var bar = function bar(state, action) {
-          return {
-            bar: 'baz'
-          };
+        // BEGIN SUBAPP APP
+
+        var films = function films(state, action) {
+          return action.films || [];
         }
-        store = store.addReducer({bar});
+        store = store.addReducer({films});
 
         var SubApp = function(props) {
-          return React.createElement('h1', null, props.value);
+          return React.createElement('div', null, [
+            React.createElement('button', {
+              onClick: props.fetchData
+            }, 'Fetch Data!'),
+            React.createElement('ul', null, 
+              props.films.map(function(film, i) {
+                return React.createElement('li', {
+                  key: i
+                }, film.title);
+              })
+            )
+          ]);
         };
 
+        var mapSubAppDispatchToProps = function(dispatch) {
+          return {
+            fetchData: () => {
+              fetch('http://swapi.co/api/films/')
+                .then(function(res) {
+                  return res.json()
+                })
+                .then(function(res) {
+                  dispatch({
+                    type: 'STAR_WARS_FILMS',
+                    films: res.results           
+                  });
+                });          
+            }
+          };
+        };
+
+        var mapSubAppStateToProps = function(state) {
+          return {
+            films: state.films
+          };
+        }
+
         var SubAppContainer = ReactRedux.connect(
-          mapStateToProps
+          mapSubAppStateToProps,
+          mapSubAppDispatchToProps
         )(SubApp);
 
         ReactDOM.render(
@@ -102,12 +145,9 @@
           document.getElementById('sub-app')
         );
 
-      }, 12000);
+        // END SUBAPP APP
 
-      ReactDOM.render(
-        React.createElement(CounterContainer, { store: store }),
-        document.getElementById('root')
-      );
+      }, 12000);
     </script>
   </body>
 </html>
