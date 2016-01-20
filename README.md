@@ -55,10 +55,16 @@ store = store.addReducer({foo});
 console.log(store.getState()); // { foo: { foo: 'bar' } }
 ```
 
+# Test
+
+```bash
+npm run test
+```
+
 # TODO
 
-- [ ] finish API
-- [ ] tests
+- [X] finish API
+- [X] tests
 
 # LICENSE
 
